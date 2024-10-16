@@ -15,7 +15,7 @@ export default function Home({ selectedDetail, setSelectedDetail }) {
   });
 
   // Handle Move - Movie Item Row
-  const [movieRowPosition, setMovieRowPosition] = useState([0])
+  const [movieRowPosition, setMovieRowPosition] = useState([])
 
   const handleMovieRowPosition = (rowIndex, value) => {
     setTimeout(() => {
@@ -72,6 +72,7 @@ export default function Home({ selectedDetail, setSelectedDetail }) {
         `https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}&with_genres=${genreId}`
       );
       const data = await response.json();
+
       setMoviesByGenre((prevMovies) => ({
         ...prevMovies,
         [genreId]: data.results,
@@ -93,63 +94,64 @@ export default function Home({ selectedDetail, setSelectedDetail }) {
 
   return (
     <div className='flex-1 py-10 ms-36 overflow-hidden home-container'>
-      <FocusNode
-        isGrid
-        focusId="home"
-        defaultFocusColumn={gridPosition.columnIndex}
-        defaultFocusRow={gridPosition.rowIndex}
-        onLeft={(e) => {
-          if (gridPosition.columnIndex === 0 && movieRowPosition[gridPosition.rowIndex] === 0) {
-            e.preventDefault();
-            setFocus('nav');
-          }
-        }}
-        onGridMove={(e) => {
-          setGridPosition({
-            rowIndex: e.nextRowIndex,
-            columnIndex: e.nextColumnIndex,
-          });
+      {movieRowPosition && movieRowPosition?.length !== 0 && (
+        <FocusNode
+          isGrid
+          focusId="home"
+          defaultFocusColumn={gridPosition.columnIndex}
+          defaultFocusRow={gridPosition.rowIndex}
+          onLeft={(e) => {
+            if (gridPosition.columnIndex === 0 && movieRowPosition[gridPosition.rowIndex] === 0) {
+              e.preventDefault();
+              setFocus('nav');
+            }
+          }}
+          onGridMove={(e) => {
+            setGridPosition({
+              rowIndex: e.nextRowIndex,
+              columnIndex: e.nextColumnIndex,
+            });
 
-          setTimeout(() => {
-            setFocus(`movie-row-focus-${e.nextRowIndex}-${movieRowPosition[e.nextRowIndex]}`);
-          }, 10);
-        }}
-        elementType={motion.div}
-        initial={{
-          scale: 0.8,
-          opacity: 0,
-          y: 0,
-        }}
-        animate={{
-          scale: 1,
-          opacity: 1,
-          y: document.querySelector('.movie-row') ? -(document.querySelector('.movie-row').clientHeight + 30) * gridPosition.rowIndex : 0,
-        }}
-        exit={{
-          scale: 1.15,
-          opacity: 0,
-        }}
-        transition={{
-          duration: 0.1,
-          ease: 'easeOut',
-        }}
-      >
-        {genres.map((item, itemIndex) => {
-          return (
-            <MovieRow
-              setSelectedDetail={setSelectedDetail}
-              moviesByGenre={moviesByGenre}
-              rowItem={item}
-              key={itemIndex}
-              rowIndex={itemIndex}
-              gridPosition={gridPosition}
-              movieRowPosition={movieRowPosition[itemIndex]}
-              setMovieRowPosition={(value) => handleMovieRowPosition(itemIndex, value)}
-            />
-          );
-        })}
-      </FocusNode>
+            setTimeout(() => {
+              setFocus(`movie-row-focus-${e.nextRowIndex}-${movieRowPosition[e.nextRowIndex]}`);
+            }, 10);
+          }}
+          elementType={motion.div}
+          initial={{
+            scale: 0.8,
+            opacity: 0,
+            y: 0,
+          }}
+          animate={{
+            scale: 1,
+            opacity: 1,
+            y: document.querySelector('.movie-row') ? -(document.querySelector('.movie-row').clientHeight + 30) * gridPosition.rowIndex : 0,
+          }}
+          exit={{
+            scale: 1.15,
+            opacity: 0,
+          }}
+          transition={{
+            duration: 0.1,
+            ease: 'easeOut',
+          }}
+        >
+          {genres.map((item, itemIndex) => {
+            return (
+              <MovieRow
+                setSelectedDetail={setSelectedDetail}
+                moviesByGenre={moviesByGenre}
+                rowItem={item}
+                key={itemIndex}
+                rowIndex={itemIndex}
+                gridPosition={gridPosition}
+                movieRowPosition={movieRowPosition[itemIndex]}
+                setMovieRowPosition={(value) => handleMovieRowPosition(itemIndex, value)}
+              />
+            );
+          })}
+        </FocusNode>
+      )}
     </div>
-
   );
 }
