@@ -38,7 +38,7 @@ export default function Home({ selectedDetail, setSelectedDetail }) {
       setTimeout(() => {
         handleMovieRowPosition(selectedDetail?.rowId, selectedDetail?.movieIndex)
         setFocus(`movie-row-focus-${selectedDetail?.rowId}-${selectedDetail?.movieIndex}`);
-      }, 100);
+      }, 300);
     }
   }, [selectedDetail])
 
