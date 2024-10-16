@@ -30,7 +30,7 @@ export default function Home({ setSelectedDetail }) {
   // Fetch Movie API
   const [genres, setGenres] = useState([]);
   const [moviesByGenre, setMoviesByGenre] = useState({});
-  const apiKey = process.env.REACT_APP_MOVIE_API_KEY;
+  const apiKey = "99d3d8f07463428864ccaa563a54417e";
 
   const fetchGenres = async () => {
     try {
