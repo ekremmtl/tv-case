@@ -4,7 +4,7 @@ export default function MovieItem({ setSelectedDetail, item, rowId, movieIndex }
   return (
     <FocusNode
       focusId={`movie-row-focus-${rowId}-${movieIndex}`}
-      onSelected={() => setSelectedDetail(item)}
+      onSelected={() => setSelectedDetail({ item, rowId, movieIndex })}
       className="movie-item min-w-80 w-80 h-[500px] rounded-xl overflow-hidden flex flex-col"
     >
       <div className='movie-item-image flex-1 rounded-xl overflow-hidden'>

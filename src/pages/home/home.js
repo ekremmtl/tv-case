@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 
 import MovieRow from './movieRow';
 
-export default function Home({ setSelectedDetail }) {
+export default function Home({ selectedDetail, setSelectedDetail }) {
   const setFocus = useSetFocus();
 
   // Handle Move - Movie Slide Row
@@ -15,7 +15,7 @@ export default function Home({ setSelectedDetail }) {
   });
 
   // Handle Move - Movie Item Row
-  const [movieRowPosition, setMovieRowPosition] = useState([0, 0, 0, 0])
+  const [movieRowPosition, setMovieRowPosition] = useState([0])
 
   const handleMovieRowPosition = (rowIndex, value) => {
     setTimeout(() => {
@@ -26,6 +26,21 @@ export default function Home({ setSelectedDetail }) {
       });
     }, 10);
   };
+
+  // Handle Back From Detail
+  useEffect(() => {
+    if (!selectedDetail?.item) {
+      setGridPosition({
+        rowIndex: selectedDetail?.rowId,
+        columnIndex: selectedDetail?.movieIndex,
+      });
+
+      setTimeout(() => {
+        handleMovieRowPosition(selectedDetail?.rowId, selectedDetail?.movieIndex)
+        setFocus(`movie-row-focus-${selectedDetail?.rowId}-${selectedDetail?.movieIndex}`);
+      }, 100);
+    }
+  }, [selectedDetail])
 
   // Fetch Movie API
   const [genres, setGenres] = useState([]);
@@ -115,7 +130,7 @@ export default function Home({ setSelectedDetail }) {
           opacity: 0,
         }}
         transition={{
-          duration: 0.25,
+          duration: 0.1,
           ease: 'easeOut',
         }}
       >

@@ -8,18 +8,22 @@ export default function MovieDetail({ selectedDetail, setSelectedDetail }) {
         <div
           className='min-w-80 h-[500px] rounded-xl overflow-hidden'
           style={{
-            backgroundImage: `url(https://image.tmdb.org/t/p/w500${selectedDetail.poster_path})`,
+            backgroundImage: `url(https://image.tmdb.org/t/p/w500${selectedDetail?.item?.poster_path})`,
             backgroundSize: 'cover',
             backgroundPosition: 'center'
           }}
         />
 
         <div className='max-w-2xl w-full'>
-          <h1 className='text-3xl font-bold mb-4'>{selectedDetail.title}</h1>
-          <p className='text-lg font-light text-white/80 mb-8'>{selectedDetail.overview}</p>
+          <h1 className='text-3xl font-bold mb-4'>{selectedDetail?.item?.title}</h1>
+          <p className='text-lg font-light text-white/80 mb-8'>{selectedDetail?.item?.overview}</p>
 
           <div className='flex gap-3'>
-            <FocusNode className="btn" onSelected={() => setSelectedDetail(null)}>
+            <FocusNode className="btn" onSelected={() => setSelectedDetail({
+              item: null,
+              rowId: selectedDetail?.rowId,
+              movieIndex: selectedDetail?.movieIndex,
+            })}>
               Back
             </FocusNode>
             <FocusNode className="btn">

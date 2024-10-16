@@ -9,7 +9,11 @@ import MovieDetail from './pages/movieDetail/movieDetail';
 
 export default function App() {
   const [selectedProfile, setSelectedProfile] = useState(false);
-  const [selectedDetail, setSelectedDetail] = useState(false);
+  const [selectedDetail, setSelectedDetail] = useState({
+    item: null,
+    rowId: 0,
+    movieIndex: 0
+  });
 
   return (
     <FocusNode className='h-screen flex gap-10'>
@@ -20,8 +24,8 @@ export default function App() {
       </AnimatePresence>
 
       {selectedProfile && <Nav selectedProfile={selectedProfile} />}
-      {!selectedDetail && selectedProfile && <Home setSelectedDetail={setSelectedDetail} />}
-      {selectedDetail && <MovieDetail selectedDetail={selectedDetail} setSelectedDetail={setSelectedDetail} />}
+      {!selectedDetail.item && selectedProfile && <Home selectedDetail={selectedDetail} setSelectedDetail={setSelectedDetail} />}
+      {selectedDetail.item && <MovieDetail selectedDetail={selectedDetail} setSelectedDetail={setSelectedDetail} />}
     </FocusNode>
   );
 }
